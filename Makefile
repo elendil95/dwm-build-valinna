@@ -53,4 +53,18 @@ uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
 		${DESTDIR}${MANPREFIX}/man1/dwm.1
 
-.PHONY: all options clean dist install uninstall
+setup:
+	echo "setting up for first time use"
+
+	test -d ${$HOME}/bin || mkdir -p ${HOME}/bin
+	cp -rv scripts/* ${HOME}/bin
+	chmod 700 ${HOME}/bin/*.sh
+	chmod 700 ${HOME}/bin/extract
+	test -d ${$HOME}/.dwm || mkdir ${HOME}/.dwm
+	test -e ${HOME}/.dwm/autostart.sh || cp -v autostart.sh ${HOME}/.dwm/
+	test -O ${HOME}/.dwm/autostart.sh || echo "WARN: ~/.dwm/autostart.sh is not owned by the current user!"
+	test -x ${HOME}/.dwm/autostart.sh || echo "WARN: ~/.dwm/autostart.sh is not executable by the current user!"
+	echo "Done"
+	echo "WARN: Remember to make the scripts in ~/bin executable, and owned by the current user"
+
+.PHONY: all options clean dist install uninstall setup
