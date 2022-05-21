@@ -43,10 +43,11 @@ install: all
 	mkdir -p ${DESTDIR}${MANPREFIX}/man1
 	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1
 	chmod 644 ${DESTDIR}${MANPREFIX}/man1/dwm.1
-	test -d ${$HOME}/.dwm || mkdir ${HOME}/.dwm
-	test -e ${HOME}/.dwm/autostart.sh || cp -v autostart.sh ${HOME}/.dwm/
-	test -O ${HOME}/.dwm/autostart.sh || echo "WARN: ~/.dwm/autostart.sh is not owned by the current user!"
-	test -x ${HOME}/.dwm/autostart.sh !! echo "WARN: ~/.dwm/autostart.sh is not executable by the current user!"
+	test -e /usr/share/xsessions/dwm.desktop || cp -v dwm.desktop /usr/share/xsessions/
+	# test -d ${$HOME}/.dwm || mkdir ${HOME}/.dwm
+	# test -e ${HOME}/.dwm/autostart.sh || cp -v autostart.sh ${HOME}/.dwm/
+	# test -O ${HOME}/.dwm/autostart.sh || echo "WARN: ~/.dwm/autostart.sh is not owned by the current user!"
+	# test -x ${HOME}/.dwm/autostart.sh || echo "WARN: ~/.dwm/autostart.sh is not executable by the current user!"
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
