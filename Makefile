@@ -20,7 +20,8 @@ options:
 ${OBJ}: config.h config.mk
 
 config.h:
-	cp config.def.h $@
+	sed "s|/home/elendil|${HOME}|g" < config.def.h > config.h
+	# cp config.def.h $@
 
 dwm: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
