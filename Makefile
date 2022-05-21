@@ -20,7 +20,8 @@ options:
 ${OBJ}: config.h config.mk
 
 config.h:
-	cp config.def.h $@
+	sed "s|/home/elendil|${HOME}|g" < config.def.h > config.h
+	# cp config.def.h $@
 
 dwm: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
@@ -53,4 +54,18 @@ uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
 		${DESTDIR}${MANPREFIX}/man1/dwm.1
 
-.PHONY: all options clean dist install uninstall
+setup:
+	echo "setting up for first time use"
+
+	test -d ${$HOMEBIN} || mkdir -p ${HOMEBIN}
+	cp -rv scripts/* ${HOMEBIN}/
+	chmod 700 ${HOMEBIN}/*.sh
+	chmod 700 ${HOMEBIN}/extract
+	test -d ${CONFIGDIR} || mkdir ${CONFIGDIR}
+	test -e ${CONFIGDIR}/autostart.sh || cp -v autostart.sh ${CONFIGDIR}
+	test -O ${CONFIGDIR}/autostart.sh || echo "WARN: ~/.dwm/autostart.sh is not owned by the current user!"
+	test -x ${CONFIGDIR}/autostart.sh || echo "WARN: ~/.dwm/autostart.sh is not executable by the current user!"
+	echo "Done"
+	echo "WARN: Remember to make the scripts in ~/bin executable, and owned by the current user"
+
+.PHONY: all options clean dist install uninstall setup
