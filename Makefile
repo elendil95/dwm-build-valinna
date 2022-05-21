@@ -56,14 +56,14 @@ uninstall:
 setup:
 	echo "setting up for first time use"
 
-	test -d ${$HOME}/bin || mkdir -p ${HOME}/bin
-	cp -rv scripts/* ${HOME}/bin
-	chmod 700 ${HOME}/bin/*.sh
-	chmod 700 ${HOME}/bin/extract
-	test -d ${$HOME}/.dwm || mkdir ${HOME}/.dwm
-	test -e ${HOME}/.dwm/autostart.sh || cp -v autostart.sh ${HOME}/.dwm/
-	test -O ${HOME}/.dwm/autostart.sh || echo "WARN: ~/.dwm/autostart.sh is not owned by the current user!"
-	test -x ${HOME}/.dwm/autostart.sh || echo "WARN: ~/.dwm/autostart.sh is not executable by the current user!"
+	test -d ${$HOMEBIN} || mkdir -p ${HOMEBIN}
+	cp -rv scripts/* ${HOMEBIN}/
+	chmod 700 ${HOMEBIN}/*.sh
+	chmod 700 ${HOMEBIN}/extract
+	test -d ${CONFIGDIR} || mkdir ${CONFIGDIR}
+	test -e ${CONFIGDIR}/autostart.sh || cp -v autostart.sh ${CONFIGDIR}
+	test -O ${CONFIGDIR}/autostart.sh || echo "WARN: ~/.dwm/autostart.sh is not owned by the current user!"
+	test -x ${CONFIGDIR}/autostart.sh || echo "WARN: ~/.dwm/autostart.sh is not executable by the current user!"
 	echo "Done"
 	echo "WARN: Remember to make the scripts in ~/bin executable, and owned by the current user"
 
