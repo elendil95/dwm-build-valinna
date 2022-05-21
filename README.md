@@ -4,8 +4,8 @@
 2. Copy all the scripts from "scripts" folder to ~/bin/
 3. run `make` and `sudo make install`
 4. Consider running `make setup` after the first install, this will create a default autostart file in the right place
-## Bar
 
+## Bar
 - install font-awesome to get icons in bar
 - install xsetroot if not present
 - modify *config.def.h* adding system specific info like what network interface you'd like to get data for, or the file to read CPU temperature from.
