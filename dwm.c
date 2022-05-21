@@ -34,6 +34,7 @@
 #include <X11/keysym.h>
 #include <X11/Xatom.h>
 #include <X11/Xlib.h>
+#include <X11/XKBlib.h>
 #include <X11/Xproto.h>
 #include <X11/Xutil.h>
 #ifdef XINERAMA
@@ -57,6 +58,7 @@
 #define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
 #define TAGMASK                 ((1 << LENGTH(tags)) - 1)
 #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
+#define LEN(x)                  (sizeof (x) / sizeof *(x))
 
 #define SYSTEM_TRAY_REQUEST_DOCK    0
 
@@ -281,6 +283,9 @@ static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
+static int valid_layout_or_variant(char *sym);
+static char* get_layout();
+static void change_layout();
 
 /* variables */
 static Systray *systray =  NULL;
@@ -2691,6 +2696,69 @@ zoom(const Arg *arg)
 		if (!c || !(c = nexttiled(c->next)))
 			return;
 	pop(c);
+}
+
+int 
+valid_layout_or_variant(char *sym) 
+{
+	size_t i;
+	/* invalid symbols from xkb rules config */
+	static const char *invalid[] = { "evdev", "inet", "pc", "base" };
+
+	for (i = 0; i < LEN(invalid); i++)
+		if (!strcmp(sym, invalid[i]))
+            return 0;
+
+	return 1;
+}
+
+char* 
+get_layout() 
+{
+    Display *dpy;
+	XkbDescRec *desc;
+	XkbStateRec state;
+	char *symbols, *tok, *layout;
+	int grp;
+	
+    layout = NULL;
+
+	dpy = XOpenDisplay(NULL);
+	desc = XkbAllocKeyboard();
+	XkbGetNames(dpy, XkbSymbolsNameMask, desc);
+	XkbGetState(dpy, XkbUseCoreKbd, &state);
+	symbols = XGetAtomName(dpy, desc->names->symbols);
+
+	layout = NULL;
+	tok = strtok(symbols, "+:");
+	for (grp = 0; tok && grp <= state.group; tok = strtok(NULL, "+:")) {
+		if (!valid_layout_or_variant(tok)) {
+			continue;
+		} else if (strlen(tok) == 1 && tok[0] >= '0' && tok[0] <= '9') {
+			/* ignore :2, :3, :4 (additional layout groups) */
+			continue;
+		}
+		layout = tok;
+		grp++;
+	}
+
+	return layout;
+}
+
+void 
+change_layout() 
+{
+  char* curr_layout = get_layout(), command[13] = "setxkbmap ";
+  int i = 0;
+  for (; i < LEN(kblayouts); ++i)
+    if (!strcmp(curr_layout, kblayouts[i]))
+      break;
+  
+  if (i == LEN(kblayouts) - 1)
+    i = 0;
+  else
+    ++i;
+  system(strcat(command, kblayouts[i]));
 }
 
 int
