@@ -117,20 +117,18 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Tab,    view,           {0} },               // Toggle to the previously focused tag
 	{ MODKEY,                       XK_w,      killclient,     {0} },               // Close focused window
 	{ MODKEY,                       XK_Tab,    setlayout,      {0} },               // Cycle layouts
-    	{ MODKEY|ShiftMask,             XK_t,      togglefloating, {0} },                   // Toggle floating for the focused window
+    { MODKEY|ShiftMask,             XK_t,      togglefloating, {0} },                   // Toggle floating for the focused window
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },       // view all windows with any tag (view all windows on all tags at once)
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },       // apply all tags to focused window (so that it shows on any tag)
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },        // Focus previous monitor
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },        // Focus next monitor
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },        // Send focused window to previous monitor
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },        // Send focused window to next monitor
-	{ MODKEY,                       XK_F5,     xrdb,           {.v = NULL } },
 	{ MODKEY|ControlMask,           XK_minus,  setgaps,        {.i = -1 } },        // Make gaps smaller
 	{ MODKEY|ControlMask,           XK_plus,   setgaps,        {.i = +1 } },        // Make gaps bigger
 	{ MODKEY|ControlMask,           XK_equal,  setgaps,        {.i = 0  } },        // Reset gaps
 	{ MODKEY|ControlMask,           XK_q,      quit,           {0} },               // Quit DWM
-    	{ MODKEY|ControlMask,           XK_r,      self_restart,   {0} },               // Restart DWM
-    	{ MODKEY|ControlMask,           XK_space,  change_layout,  {0} },               // Change keyboard layout
+    { MODKEY|ControlMask,           XK_space,  change_layout,  {0} },               // Change keyboard layout
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
